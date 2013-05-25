@@ -31,14 +31,77 @@ class RBtree
 	Node* sentinel;
 	void RBfix(Node*);
 	void rsh(Node*); //Rekurencyjny SHow
+	Value& rget(Node*,Key&,Compare&) throw(NoSuchItemFound);
 	void lr(Node*);  //lewa rotacja
 	void rr(Node*);  //prawa rotacja
 	protected:
 	public:
+		class NoSuchItemFound
+		{
+			private:
+			protected:
+			public:
+			NoSuchItemFound() {} // I can make an object of this class
+		}
+
 		RBtree();
 		void add(Key,Value);
 		void show();
+		Value& get(Key) throw(NoSuchItemFound);
 };
+
+template<class Key, class Value, class Compare>
+Value& RBtree<Key,Value,Compare>::rget(Node* here, Key& kee, Compare& comp) throw(NoSuchItemFound)
+{
+	if (here == sentinel)
+	{
+		throw NoSuchItemFound();
+	}
+	if (here -> k == kee)
+	{
+		return here -> k;
+	}
+	if ( comp.less(kee,here -> k) )
+	{
+		try
+		{
+			return this->rget(here->left,what,comp);
+		}
+		catch(NoSuchItemFound)
+		{
+			throw NoSuchItemFound();
+		}
+
+	}
+	else
+	{
+		try
+		{
+			return this->rget(here->right,what,comp);
+		}
+		catch(NoSuchItemFound)
+		{
+			throw NoSuchItemFound();
+		}
+
+
+	}
+}
+
+template<class Key, class Value, class Compare>
+Value& RBtree<Key,Value,Compare>::get(Key what) throw (NoSuchItemFound);
+{
+	Compare comp;
+	
+	try
+	{
+		return this->rget(root,what,comp);
+	}
+	catch(NoSuchItemFound)
+	{
+		throw NoSuchItemFound();
+	}
+}
 
 template<class Key, class Value, class Compare>
 RBtree<Key,Value,Compare>::Node::Node()
@@ -98,7 +161,6 @@ void RBtree<Key,Value,Compare>::add(Key k,Value v)
 	newone->left = sentinel;
 	newone->right = sentinel;
 	newone->color = RED;
-	this -> show();
 	RBfix(newone);
 }
 
