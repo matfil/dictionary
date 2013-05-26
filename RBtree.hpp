@@ -2,10 +2,20 @@
 #define RBTREE_HPP
 
 #include <iostream>
+#include <exception>
 
 template<class Key, class Value, class Compare>
 class RBtree
 {
+	public:
+	class NoSuchItemFound: public std::exception
+		{
+			private:
+			protected:
+			public:
+			NoSuchItemFound() {} // I can make an object of this class
+			const char* what()const noexcept; 
+		};
 	private:
 
 		static const bool BLACK = false;
@@ -36,19 +46,19 @@ class RBtree
 	void rr(Node*);  //prawa rotacja
 	protected:
 	public:
-		class NoSuchItemFound
-		{
-			private:
-			protected:
-			public:
-			NoSuchItemFound() {} // I can make an object of this class
-		}
-
+		
 		RBtree();
 		void add(Key,Value);
 		void show();
 		Value& get(Key) throw(NoSuchItemFound);
 };
+/* ******************************************************** */
+
+template<class Key, class Value, class Compare>
+const char* RBtree<Key,Value,Compare>::NoSuchItemFound::what()const noexcept
+{
+	return "No such item found!";
+}
 
 template<class Key, class Value, class Compare>
 Value& RBtree<Key,Value,Compare>::rget(Node* here, Key& kee, Compare& comp) throw(NoSuchItemFound)
@@ -59,13 +69,13 @@ Value& RBtree<Key,Value,Compare>::rget(Node* here, Key& kee, Compare& comp) thro
 	}
 	if (here -> k == kee)
 	{
-		return here -> k;
+		return here -> v;
 	}
 	if ( comp.less(kee,here -> k) )
 	{
 		try
 		{
-			return this->rget(here->left,what,comp);
+			return this->rget(here->left,kee,comp);
 		}
 		catch(NoSuchItemFound)
 		{
@@ -77,7 +87,7 @@ Value& RBtree<Key,Value,Compare>::rget(Node* here, Key& kee, Compare& comp) thro
 	{
 		try
 		{
-			return this->rget(here->right,what,comp);
+			return this->rget(here->right,kee,comp);
 		}
 		catch(NoSuchItemFound)
 		{
@@ -89,7 +99,7 @@ Value& RBtree<Key,Value,Compare>::rget(Node* here, Key& kee, Compare& comp) thro
 }
 
 template<class Key, class Value, class Compare>
-Value& RBtree<Key,Value,Compare>::get(Key what) throw (NoSuchItemFound);
+Value& RBtree<Key,Value,Compare>::get(Key what) throw (NoSuchItemFound)
 {
 	Compare comp;
 	
