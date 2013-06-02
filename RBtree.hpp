@@ -44,15 +44,36 @@ class RBtree
 	Value& rget(Node*,Key&,Compare&) throw(NoSuchItemFound);
 	void lr(Node*);  //lewa rotacja
 	void rr(Node*);  //prawa rotacja
+	bool rex(Node*,Key); //środek do   bool exists(Key)
 	protected:
 	public:
 		
 		RBtree();
+		bool exists(Key);
 		void add(Key,Value);
 		void show();
 		Value& get(Key) throw(NoSuchItemFound);
 };
 /* ******************************************************** */
+template<class Key, class Value, class Compare>
+bool RBtree<Key,Value,Compare>::exists(Key kee)
+{
+	return rex(root, kee);
+}
+
+template<class Key, class Value, class Compare>
+bool RBtree<Key,Value,Compare>::rex(Node* whereIam, Key kee)
+{
+	if (whereIam == sentinel)
+		return false;
+	else
+	{
+		if(whereIam->k == kee)
+		return true;
+
+		return ( this->rex(whereIam->left,kee) || this->rex(whereIam->right,kee) );
+	}
+}
 
 template<class Key, class Value, class Compare>
 const char* RBtree<Key,Value,Compare>::NoSuchItemFound::what()const noexcept

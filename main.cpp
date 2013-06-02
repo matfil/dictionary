@@ -1,4 +1,5 @@
 #include "compare.hpp"
+#include "preprocess.h"
 
 class Xxx: public Comparator<int>
 {
@@ -33,5 +34,8 @@ int main()
 		std::cout << "It worked "  << a.what()<< std::endl;	
 	}
 	tree.show();
+
+
+	preprocess ("testfile","asd");
 	return 0;
 }
