@@ -2,7 +2,12 @@
 #define PREPROCESS_H
 
 #include <string>
+#include <vector>
 #include <exception>
+#include "RBtree.hpp"
+#include "compare.hpp"
+
+
 
 class BadInput: public std::exception
 {
@@ -13,7 +18,7 @@ class BadInput: public std::exception
 	const char* what()const noexcept;
 };
 
-void preprocess (std::string&&, std::string&&) throw (BadInput);
+void preprocess (std::string, std::string, RBtree<std::string, std::string, Strcomp>&, std::vector<std::string>&) throw (BadInput);
 bool iscommand(std::string);
 
 #endif

@@ -10,9 +10,11 @@ class Xxx: public Comparator<int>
 #include "RBtree.hpp"
 
 #include <iostream>
+#include <string>
 
 int main()
 {
+/**********************debug block
 	RBtree<int,int,Xxx> tree;
 	tree.add(1,0);
 	tree.add(4,3);
@@ -34,8 +36,30 @@ int main()
 		std::cout << "It worked "  << a.what()<< std::endl;	
 	}
 	tree.show();
+**********************************/
+	bool failure;
+	do
+	{
+	failure = false;
+	std::string a,b;
+		std::cout << "Podaj nazwę pliku wejściowego"<< std::endl;
+		std::cin >> a;
+		std::cout << "Podaj nazwę pliku wyjściowego"<< std::endl;	
+		std::cin >> b;
+	
 
+	RBtree<std::string,std::string,Strcomp> defines;//drzewo
+	std::vector<std::string> files;//pliki
 
-	preprocess ("testfile","asd");
+	try
+	{
+		preprocess (a, b, defines, files);
+	}
+	catch(BadInput)
+	{
+		std::cout << "Popraw plik wejściowy i spróbuj ponownie"<< std::endl<<std::endl;
+		failure = true;
+	}
+	}while(failure);
 	return 0;
 }
