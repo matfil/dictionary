@@ -100,7 +100,7 @@ Value& RBtree<Key,Value,Compare>::rget(Node* here, Key& kee, Compare& comp) thro
 		}
 		catch(NoSuchItemFound)
 		{
-			throw NoSuchItemFound();
+			throw;
 		}
 
 	}

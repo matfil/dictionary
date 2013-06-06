@@ -1,7 +1,7 @@
 CC=g++-4.7
 FLAGS=-std=c++11 -ggdb
 
-all:test
+all:program
 
 program:main.o preprocess.o
 	$(CC) $(FLAGS) -o program main.o preprocess.o
